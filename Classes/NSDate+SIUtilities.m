@@ -47,25 +47,6 @@
     return localDate;
 }
 
-//- (NSDate *)si_GMTDateAtStartOfDayWithTimeZoneName:(NSString *)tzName
-//{
-//    NSCalendar *calendar = [NSCalendar currentCalendar];
-//    NSUInteger components = (NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit |
-//                             NSWeekCalendarUnit |  NSHourCalendarUnit | NSMinuteCalendarUnit |
-//                             NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit);
-//
-//    NSDateComponents *dataComponents = [calendar components:components fromDate:self];
-//    dataComponents.hour = 0;
-//	dataComponents.minute = 0;
-//	dataComponents.second = 0;
-//    NSDate *localAtStartDay = [calendar dateFromComponents:dataComponents];
-//    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:tzName];
-//    if (timeZone.secondsFromGMT < 0) {
-//        return [localAtStartDay dateByAddingTimeInterval:ONEDAYTIMEINTERVAL + timeZone.secondsFromGMT + [timeZone daylightSavingTimeOffsetForDate:localAtStartDay]];
-//    }
-//    return [localAtStartDay dateByAddingTimeInterval:timeZone.secondsFromGMT + [timeZone daylightSavingTimeOffsetForDate:localAtStartDay]];
-//}
-
 
 
 @end
