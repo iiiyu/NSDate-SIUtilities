@@ -7,8 +7,11 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "NSDate+SIUtilities.h"
 
 @interface NSDateSIUtilitiesTests : XCTestCase
+
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -18,6 +21,11 @@
 {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    [self.dateFormatter setDateFormat:@"HH:mm:ss"];
+    [self.dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
+    
 }
 
 - (void)tearDown
@@ -26,9 +34,38 @@
     [super tearDown];
 }
 
-- (void)testExample
+- (void)testSI_GMTDateAtStartOfDayWithTimeZoneNameMethod
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    NSDate *date = [NSDate date];
+    for (NSUInteger i = 0; i < 8760; i++) {
+        NSDate *testDate = [[date dateByAddingTimeInterval:3600 * i] si_GMTDateAsStartOfDayWithCurrentTimeZone];
+        NSString *string = [self.dateFormatter stringFromDate:testDate];
+        XCTAssertFalse(![string isEqualToString:@"00:00:00"], @"fuck!!!!! string:%@ testDate:%@", string, testDate);
+    }
 }
+
+- (void)testSI_LocalDate
+{
+    NSDate *date = [NSDate date];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSUInteger components = (NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit |
+                             NSWeekCalendarUnit |  NSHourCalendarUnit | NSMinuteCalendarUnit |
+                             NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit);
+    
+    for (NSUInteger i = 0; i < 8760; i++) {
+        NSDateComponents *dataComponents = [calendar components:components fromDate:[date dateByAddingTimeInterval:3600 * i]];
+        dataComponents.hour = 0;
+        dataComponents.minute = 0;
+        dataComponents.second = 0;
+        
+        NSDate *testGMTDate = [calendar dateFromComponents:dataComponents];
+        NSDate *testLocalDate = [testGMTDate si_LocalDate];
+        NSLog(@"testGMTDate:%@ testLocalDate:%@", testGMTDate, testLocalDate);
+        
+        XCTAssertFalse(![testGMTDate isEqualToDate:testLocalDate], @"fuck!!!!! testGMTDate:%@ testLocalDate:%@", testGMTDate, testLocalDate);
+    }
+}
+
+
 
 @end
