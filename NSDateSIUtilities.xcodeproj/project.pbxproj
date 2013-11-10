@@ -21,8 +21,6 @@
 		5B854A77182F6EE4008FF7B0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B854A59182F6EE4008FF7B0 /* UIKit.framework */; };
 		5B854A7F182F6EE4008FF7B0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5B854A7D182F6EE4008FF7B0 /* InfoPlist.strings */; };
 		5B854A81182F6EE4008FF7B0 /* NSDateSIUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B854A80182F6EE4008FF7B0 /* NSDateSIUtilitiesTests.m */; };
-		5B854A90182F8043008FF7B0 /* NSDate+SIUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B854A8F182F8043008FF7B0 /* NSDate+SIUtilities.m */; };
-		5B854A91182F8043008FF7B0 /* NSDate+SIUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B854A8F182F8043008FF7B0 /* NSDate+SIUtilities.m */; };
 		5B854A95182F826F008FF7B0 /* NSDate+SIUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B854A94182F826F008FF7B0 /* NSDate+SIUtilities.m */; };
 		5B854A96182F826F008FF7B0 /* NSDate+SIUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B854A94182F826F008FF7B0 /* NSDate+SIUtilities.m */; };
 /* End PBXBuildFile section */
@@ -57,8 +55,6 @@
 		5B854A7C182F6EE4008FF7B0 /* NSDateSIUtilitiesTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NSDateSIUtilitiesTests-Info.plist"; sourceTree = "<group>"; };
 		5B854A7E182F6EE4008FF7B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5B854A80182F6EE4008FF7B0 /* NSDateSIUtilitiesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSDateSIUtilitiesTests.m; sourceTree = "<group>"; };
-		5B854A8E182F8043008FF7B0 /* NSDate+SIUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+SIUtilities.h"; sourceTree = SOURCE_ROOT; };
-		5B854A8F182F8043008FF7B0 /* NSDate+SIUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+SIUtilities.m"; sourceTree = SOURCE_ROOT; };
 		5B854A93182F826F008FF7B0 /* NSDate+SIUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+SIUtilities.h"; path = "Classes/NSDate+SIUtilities.h"; sourceTree = "<group>"; };
 		5B854A94182F826F008FF7B0 /* NSDate+SIUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+SIUtilities.m"; path = "Classes/NSDate+SIUtilities.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -166,8 +162,6 @@
 			children = (
 				5B854A93182F826F008FF7B0 /* NSDate+SIUtilities.h */,
 				5B854A94182F826F008FF7B0 /* NSDate+SIUtilities.m */,
-				5B854A8E182F8043008FF7B0 /* NSDate+SIUtilities.h */,
-				5B854A8F182F8043008FF7B0 /* NSDate+SIUtilities.m */,
 			);
 			name = "NSDate+SIUtilities";
 			sourceTree = "<group>";
@@ -271,7 +265,6 @@
 			files = (
 				5B854A95182F826F008FF7B0 /* NSDate+SIUtilities.m in Sources */,
 				5B854A6C182F6EE4008FF7B0 /* ViewController.m in Sources */,
-				5B854A90182F8043008FF7B0 /* NSDate+SIUtilities.m in Sources */,
 				5B854A66182F6EE4008FF7B0 /* AppDelegate.m in Sources */,
 				5B854A62182F6EE4008FF7B0 /* main.m in Sources */,
 			);
@@ -283,7 +276,6 @@
 			files = (
 				5B854A96182F826F008FF7B0 /* NSDate+SIUtilities.m in Sources */,
 				5B854A81182F6EE4008FF7B0 /* NSDateSIUtilitiesTests.m in Sources */,
-				5B854A91182F8043008FF7B0 /* NSDate+SIUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

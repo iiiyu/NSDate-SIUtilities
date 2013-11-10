@@ -75,7 +75,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/iiiyu/NSDate-SIUtilities.git", :tag => "1.0.0" }
+  s.source       = { :git => "https://github.com/iiiyu/NSDate-SIUtilities.git", :tag => "0.0.1" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
