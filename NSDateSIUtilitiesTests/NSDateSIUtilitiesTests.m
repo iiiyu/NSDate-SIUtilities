@@ -60,8 +60,6 @@
         
         NSDate *testGMTDate = [calendar dateFromComponents:dataComponents];
         NSDate *testLocalDate = [testGMTDate si_LocalDate];
-        NSLog(@"testGMTDate:%@ testLocalDate:%@", testGMTDate, testLocalDate);
-        
         XCTAssertFalse(![testGMTDate isEqualToDate:testLocalDate], @"fuck!!!!! testGMTDate:%@ testLocalDate:%@", testGMTDate, testLocalDate);
     }
 }

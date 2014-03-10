@@ -12,26 +12,11 @@
 
 @implementation NSDate (SIUtilities)
 
-
-- (NSDate *)si_GMTDateAsStartOfDayWithCurrentTimeZone
-{
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSUInteger components = (NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit |
-                             NSWeekCalendarUnit |  NSHourCalendarUnit | NSMinuteCalendarUnit |
-                             NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit);
-    
-    NSDateComponents *dataComponents = [calendar components:components fromDate:self];
-    dataComponents.hour = 0;
-	dataComponents.minute = 0;
-	dataComponents.second = 0;
-    NSDate *localDateAtStartDay = [calendar dateFromComponents:dataComponents];
-    NSTimeZone *timeZone = [NSTimeZone localTimeZone];
-    if (timeZone.secondsFromGMT < 0) {
-        return [localDateAtStartDay dateByAddingTimeInterval:ONEDAYTIMEINTERVAL + timeZone.secondsFromGMT + [timeZone daylightSavingTimeOffsetForDate:localDateAtStartDay]];
-    }
-    return [localDateAtStartDay dateByAddingTimeInterval:timeZone.secondsFromGMT + [timeZone daylightSavingTimeOffsetForDate:localDateAtStartDay]];
-}
-
+/**
+ *  如果是GMT时间00:00:00 还原到本地时间的00:00:00。否则不做改变
+ *
+ *  @return 本地时间
+ */
 - (NSDate *)si_LocalDate
 {
     NSDate *localDate = self;
@@ -47,6 +32,34 @@
     return localDate;
 }
 
+/**
+ *  从任意时间获得对应GMT时间的00:00:00
+ *
+ *  @return GMT时间00:00:00
+ */
+- (NSDate *)si_GMTDateAsStartOfDayWithCurrentTimeZone
+{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSUInteger components = (NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit |
+                             NSWeekCalendarUnit |  NSHourCalendarUnit | NSMinuteCalendarUnit |
+                             NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit);
+    // 获取本地时间的00:00:00
+    NSDateComponents *dataComponents = [calendar components:components fromDate:self];
+    dataComponents.hour = 0;
+	dataComponents.minute = 0;
+	dataComponents.second = 0;
+    NSDate *localDateAtStartDay = [calendar dateFromComponents:dataComponents];
+    
+    // 获取GMT时间的00:00:00
+    [calendar setTimeZone: [NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+    dataComponents = [calendar components:components fromDate:localDateAtStartDay];
+    dataComponents.hour = 0;
+	dataComponents.minute = 0;
+	dataComponents.second = 0;
+    NSDate *result = [calendar dateFromComponents:dataComponents];
+    
+    return result;
+}
 
 
 @end
