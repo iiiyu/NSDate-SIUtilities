@@ -24,11 +24,11 @@
     if (offset == 0) {
         NSTimeZone *timeZone = [NSTimeZone localTimeZone];
         NSInteger offsetSeconds = timeZone.secondsFromGMT;
-        localDate = [self dateByAddingTimeInterval:offsetSeconds + [timeZone daylightSavingTimeOffsetForDate:self]];
+        localDate = [self dateByAddingTimeInterval:offsetSeconds];
     }else{
         localDate = self;
     }
-    
+//    NSLog(@"%@ %@", self, localDate);
     return localDate;
 }
 
@@ -44,22 +44,45 @@
                              NSWeekCalendarUnit |  NSHourCalendarUnit | NSMinuteCalendarUnit |
                              NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit);
     // 获取本地时间的00:00:00
-    NSDateComponents *dataComponents = [calendar components:components fromDate:self];
-    dataComponents.hour = 0;
-	dataComponents.minute = 0;
-	dataComponents.second = 0;
-    NSDate *localDateAtStartDay = [calendar dateFromComponents:dataComponents];
-    
+    NSString *localDateString = [[self sip_localDateFormatter] stringFromDate:self];
+    NSDate *result = [[self sip_GMTDateFormatter] dateFromString:localDateString];
     // 获取GMT时间的00:00:00
     [calendar setTimeZone: [NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
-    dataComponents = [calendar components:components fromDate:localDateAtStartDay];
+    NSDateComponents *dataComponents = [calendar components:components fromDate:result];
     dataComponents.hour = 0;
 	dataComponents.minute = 0;
 	dataComponents.second = 0;
-    NSDate *result = [calendar dateFromComponents:dataComponents];
-    
+    result = [calendar dateFromComponents:dataComponents];
+//    NSLog(@"%@ %@ %@", self, result, localDateString);
     return result;
 }
+
+#pragma mark - private methods
+
+- (NSDateFormatter *)sip_localDateFormatter
+{
+    static NSDateFormatter *dateFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"yyyy-MM-dd" options:0 locale:[NSLocale currentLocale]];
+    });
+    return dateFormatter;
+}
+
+- (NSDateFormatter *)sip_GMTDateFormatter
+{
+    static NSDateFormatter *dateFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setLocale:[[NSLocale alloc]initWithLocaleIdentifier:@"en_US_POSIX"]];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+        dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"yyyy-MM-dd" options:0 locale:[NSLocale currentLocale]];
+    });
+    return dateFormatter;
+}
+
 
 
 @end
