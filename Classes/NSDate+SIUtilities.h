@@ -12,6 +12,6 @@
 
 
 - (NSDate *)si_LocalDate;
-- (NSDate *)si_GMTDateAsStartOfDayWithCurrentTimeZone;
+- (NSDate *)si_UTCDateAsStartOfDayWithCurrentTimeZone;
 
 @end

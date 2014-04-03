@@ -19,7 +19,7 @@
 
 - (NSDateFormatter *)sip_localDateFormatter;
 
-- (NSDateFormatter *)sip_GMTDateFormatter;
+- (NSDateFormatter *)sip_UTCDateFormatter;
 
 @end
 
@@ -32,7 +32,7 @@
     
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"HH:mm:ss"];
-    [self.dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
+    [self.dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
 }
 
 - (void)tearDown
@@ -45,9 +45,9 @@
 {
     NSDate *date = [NSDate date];
     for (NSUInteger i = 0; i < 8760; i++) {
-        NSDate *testDate = [[date dateByAddingTimeInterval:3600 * i] si_GMTDateAsStartOfDayWithCurrentTimeZone];
+        NSDate *testDate = [[date dateByAddingTimeInterval:3600 * i] si_UTCDateAsStartOfDayWithCurrentTimeZone];
         NSString *string = [self.dateFormatter stringFromDate:testDate];
-        XCTAssertFalse(![string isEqualToString:@"00:00:00"], @"fuck!!!!! string:%@ testDate:%@", string, testDate);
+        XCTAssertFalse(![string isEqualToString:@"00:00:00"], @"string:%@ testDate:%@", string, testDate);
     }
 }
 
@@ -60,12 +60,12 @@
     newDf.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     
     for (NSUInteger i = 0; i < 8784; i++) {
-        NSDate *testDate = [[date dateByAddingTimeInterval:3600 * i] si_GMTDateAsStartOfDayWithCurrentTimeZone];
+        NSDate *testDate = [[date dateByAddingTimeInterval:3600 * i] si_UTCDateAsStartOfDayWithCurrentTimeZone];
         NSDate *testLocalDate = [testDate si_LocalDate];
         NSString *dfstring = [df stringFromDate:testLocalDate];
         NSString *newdfstring = [newDf stringFromDate:testLocalDate];
 //        NSLog(@"%@ %@ %@", newdfstring, testLocalDate, testDate);
-        XCTAssertFalse(![dfstring isEqualToString:@"00:00:00"], @"fuck!!!!! testGMTDate:%@ testLocalDate:%@", dfstring, testLocalDate);
+        XCTAssertFalse(![dfstring isEqualToString:@"00:00:00"], @"testUTCDate:%@ testLocalDate:%@", dfstring, testLocalDate);
     }
 }
 
@@ -73,7 +73,7 @@
 - (void)testEqualToDate
 {
     NSDate *date = [NSDate date];
-    XCTAssert([[date si_GMTDateAsStartOfDayWithCurrentTimeZone] isEqualToDate:[[date si_GMTDateAsStartOfDayWithCurrentTimeZone] si_GMTDateAsStartOfDayWithCurrentTimeZone]], @"");
+    XCTAssert([[date si_UTCDateAsStartOfDayWithCurrentTimeZone] isEqualToDate:[[date si_UTCDateAsStartOfDayWithCurrentTimeZone] si_UTCDateAsStartOfDayWithCurrentTimeZone]], @"");
     XCTAssert([[date si_LocalDate] isEqualToDate:[[date si_LocalDate] si_LocalDate]], @"");
 }
 
@@ -84,9 +84,9 @@
     NSUInteger components = (NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit |
                              NSWeekCalendarUnit |  NSHourCalendarUnit | NSMinuteCalendarUnit |
                              NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit);
-    calendar.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+    calendar.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     NSDateComponents *dateComponents = [calendar components:components fromDate:date];
-    dateComponents.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+    dateComponents.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     dateComponents.year = 2014;
     dateComponents.month = 10;
     dateComponents.day = 19;

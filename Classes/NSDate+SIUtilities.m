@@ -14,7 +14,7 @@ static const double oneHour = 3600.0;
 @implementation NSDate (SIUtilities)
 
 /**
- *  如果是GMT时间00:00:00 还原到本地时间的00:00:00。否则不做改变
+ *  如果是UTC时间00:00:00 还原到本地时间的00:00:00。否则不做改变
  *
  *  @return 本地时间
  */
@@ -46,11 +46,11 @@ static const double oneHour = 3600.0;
 }
 
 /**
- *  从任意时间获得对应GMT时间的00:00:00
+ *  从任意时间获得对应UTC时间的00:00:00
  *
- *  @return GMT时间00:00:00
+ *  @return UTC时间00:00:00
  */
-- (NSDate *)si_GMTDateAsStartOfDayWithCurrentTimeZone
+- (NSDate *)si_UTCDateAsStartOfDayWithCurrentTimeZone
 {
     NSDate *result;
     NSTimeInterval offset = fmod([self timeIntervalSince1970], ONEDAYTIMEINTERVAL);
@@ -61,9 +61,9 @@ static const double oneHour = 3600.0;
                                  NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit);
         // 获取本地时间的00:00:00
         NSString *localDateString = [[self sip_localDateFormatter] stringFromDate:self];
-        result = [[self sip_GMTDateFormatter] dateFromString:localDateString];
-        // 获取GMT时间的00:00:00
-        [calendar setTimeZone: [NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+        result = [[self sip_UTCDateFormatter] dateFromString:localDateString];
+        // 获取UTC时间的00:00:00
+        [calendar setTimeZone: [NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
         NSDateComponents *dateComponents = [calendar components:components fromDate:result];
         dateComponents.hour = 0;
         dateComponents.minute = 0;
@@ -86,20 +86,33 @@ static const double oneHour = 3600.0;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"yyyy-MM-dd" options:0 locale:[NSLocale currentLocale]];
+        // 目前支持iOS 7上系统Settings里面支持的三种日历模式
+        if ([[[NSCalendar currentCalendar] calendarIdentifier] isEqualToString:NSGregorianCalendar]) {
+            dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"yyyy-MM-dd" options:0 locale:[NSLocale currentLocale]];
+        } else if ([[[NSCalendar currentCalendar] calendarIdentifier] isEqualToString:NSBuddhistCalendar]) {
+            dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"GG yyyy-MM-dd" options:0 locale:[NSLocale currentLocale]];
+        } else if ([[[NSCalendar currentCalendar] calendarIdentifier] isEqualToString:NSJapaneseCalendar]) {
+            dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"GG yy-MM-dd" options:0 locale:[NSLocale currentLocale]];
+        }
     });
     return dateFormatter;
 }
 
-- (NSDateFormatter *)sip_GMTDateFormatter
+- (NSDateFormatter *)sip_UTCDateFormatter
 {
     static NSDateFormatter *dateFormatter = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setLocale:[[NSLocale alloc]initWithLocaleIdentifier:@"en_US_POSIX"]];
-        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
-        dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"yyyy-MM-dd" options:0 locale:[NSLocale currentLocale]];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+        if ([[[NSCalendar currentCalendar] calendarIdentifier] isEqualToString:NSGregorianCalendar]) {
+            dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"yyyy-MM-dd" options:0 locale:[NSLocale currentLocale]];
+        } else if ([[[NSCalendar currentCalendar] calendarIdentifier] isEqualToString:NSBuddhistCalendar]) {
+            dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"GG yyyy-MM-dd" options:0 locale:[NSLocale currentLocale]];
+        } else if ([[[NSCalendar currentCalendar] calendarIdentifier] isEqualToString:NSJapaneseCalendar]) {
+            dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"GG yy-MM-dd" options:0 locale:[NSLocale currentLocale]];
+        }
     });
     return dateFormatter;
 }
