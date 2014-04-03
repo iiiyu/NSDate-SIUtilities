@@ -2,4 +2,52 @@
 <Bucket
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Classes/NSDate+SIUtilities.m"
+            timestampString = "418203617.154382"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "-si_UTCDateAsStartOfDayWithCurrentTimeZone"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[NSDate(SIUtilities) si_UTCDateAsStartOfDayWithCurrentTimeZone]"
+                  moduleName = "NSDateSIUtilities"
+                  urlString = "file:///Users/iYu/Developer/SumiOnGithub/NSDateSIUtilities/Classes/NSDate+SIUtilities.m"
+                  timestampString = "418203663.610166"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "426">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[NSDate(SIUtilities) si_UTCDateAsStartOfDayWithCurrentTimeZone]"
+                  moduleName = "NSDateSIUtilitiesTests"
+                  urlString = "file:///Users/iYu/Developer/SumiOnGithub/NSDateSIUtilities/Classes/NSDate+SIUtilities.m"
+                  timestampString = "418203665.683635"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "426">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
