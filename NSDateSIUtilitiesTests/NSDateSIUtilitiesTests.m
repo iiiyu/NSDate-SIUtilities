@@ -17,7 +17,7 @@
 
 @interface NSDate(Test)
 
-- (NSDateFormatter *)sip_localDateFormatter;
+- (NSDateFormatter *)sip_localDateFormatterOne;
 
 - (NSDateFormatter *)sip_UTCDateFormatter;
 

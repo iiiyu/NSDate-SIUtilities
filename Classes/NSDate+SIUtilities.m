@@ -28,9 +28,7 @@ static const double oneHour = 3600.0;
         NSInteger offsetSeconds = timeZone.secondsFromGMT;
         localDate = [self dateByAddingTimeInterval:-offsetSeconds];
         // 不同情况不同处理
-        NSDateFormatter *df = [[NSDateFormatter alloc] init];
-        df.dateFormat = @"HH";
-        NSInteger flag = [[df stringFromDate:localDate] integerValue];
+        NSInteger flag = [[[self sip_localDateFormatterTwo] stringFromDate:localDate] integerValue];
         result = localDate;
         if (flag > 0 && flag < 12) {
             result = [localDate dateByAddingTimeInterval:-(oneHour * flag)];
@@ -55,12 +53,12 @@ static const double oneHour = 3600.0;
     NSDate *result;
     NSTimeInterval offset = fmod([self timeIntervalSince1970], ONEDAYTIMEINTERVAL);
     if (offset != 0) {
-        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         NSUInteger components = (NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit |
                                  NSWeekCalendarUnit |  NSHourCalendarUnit | NSMinuteCalendarUnit |
                                  NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit);
         // 获取本地时间的00:00:00
-        NSString *localDateString = [[self sip_localDateFormatter] stringFromDate:self];
+        NSString *localDateString = [[self sip_localDateFormatterOne] stringFromDate:self];
         result = [[self sip_UTCDateFormatter] dateFromString:localDateString];
         // 获取UTC时间的00:00:00
         [calendar setTimeZone: [NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
@@ -69,7 +67,7 @@ static const double oneHour = 3600.0;
         dateComponents.minute = 0;
         dateComponents.second = 0;
         result = [calendar dateFromComponents:dateComponents];
-        //    NSLog(@"%@ %@ %@", self, result, localDateString);
+        NSLog(@"%@ %@ %@", self, result, localDateString);
         
     } else {
         result = self;
@@ -80,7 +78,7 @@ static const double oneHour = 3600.0;
 
 #pragma mark - private methods
 
-- (NSDateFormatter *)sip_localDateFormatter
+- (NSDateFormatter *)sip_localDateFormatterOne
 {
     static NSDateFormatter *dateFormatter = nil;
     static dispatch_once_t onceToken;
@@ -112,6 +110,17 @@ static const double oneHour = 3600.0;
         } else if ([[[NSCalendar currentCalendar] calendarIdentifier] isEqualToString:NSJapaneseCalendar]) {
             dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"GG yy-MM-dd" options:0 locale:[NSLocale currentLocale]];
         }
+    });
+    return dateFormatter;
+}
+
+- (NSDateFormatter *)sip_localDateFormatterTwo
+{
+    static NSDateFormatter *dateFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"HH";
     });
     return dateFormatter;
 }
