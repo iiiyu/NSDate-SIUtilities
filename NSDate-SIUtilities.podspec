@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "NSDate-SIUtilities"
-  s.version      = "0.0.3"
+  s.version      = "0.0.5"
   s.summary      = "NSDate+SIUtilities"
 
   s.description  = <<-DESC
