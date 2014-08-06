@@ -53,7 +53,7 @@ static const double oneHour = 3600.0;
     NSDate *result;
     NSTimeInterval offset = fmod([self timeIntervalSince1970], ONEDAYTIMEINTERVAL);
     if (offset != 0) {
-        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSCalendar *calendar = [self gregorianCalendar];
         NSUInteger components = (NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit |
                                  NSWeekCalendarUnit |  NSHourCalendarUnit | NSMinuteCalendarUnit |
                                  NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit);
@@ -61,7 +61,7 @@ static const double oneHour = 3600.0;
         NSString *localDateString = [[self sip_localDateFormatterOne] stringFromDate:self];
         result = [[self sip_UTCDateFormatter] dateFromString:localDateString];
         // 获取UTC时间的00:00:00
-        [calendar setTimeZone: [NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+        
         NSDateComponents *dateComponents = [calendar components:components fromDate:result];
         dateComponents.hour = 0;
         dateComponents.minute = 0;
@@ -77,6 +77,17 @@ static const double oneHour = 3600.0;
 }
 
 #pragma mark - private methods
+
+- (NSCalendar *)gregorianCalendar
+{
+    static dispatch_once_t onceToken;
+    static NSCalendar *calendar = nil;
+    dispatch_once(&onceToken, ^{
+        calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        [calendar setTimeZone: [NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    });
+    return calendar;
+}
 
 - (NSDateFormatter *)sip_localDateFormatterOne
 {
