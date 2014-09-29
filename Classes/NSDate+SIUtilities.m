@@ -39,7 +39,7 @@ static const double oneHour = 3600.0;
     } else {
         result = self;
     }
-    //    NSLog(@"%@ %@", self, localDate);
+
     return result;
 }
 
@@ -67,8 +67,6 @@ static const double oneHour = 3600.0;
         dateComponents.minute = 0;
         dateComponents.second = 0;
         result = [calendar dateFromComponents:dateComponents];
-        NSLog(@"%@ %@ %@", self, result, localDateString);
-        
     } else {
         result = self;
     }
