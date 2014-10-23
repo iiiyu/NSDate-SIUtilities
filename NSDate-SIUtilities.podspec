@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "NSDate-SIUtilities"
-  s.version      = "0.0.5"
+  s.version      = "0.0.6"
   s.summary      = "NSDate+SIUtilities"
 
   s.description  = <<-DESC
@@ -62,6 +62,7 @@ Pod::Spec.new do |s|
   #
 
   s.platform     = :ios
+  s.platform     = :osx
   # s.platform     = :ios, '5.0'
 
   #  When using multiple platforms
