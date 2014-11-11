@@ -8,8 +8,8 @@
 
 #import "NSDate+SIUtilities.h"
 
-#define ONEDAYTIMEINTERVAL 86400.0
 static const double oneHour = 3600.0;
+static const double oneDay = 86400.0;
 
 @implementation NSDate (SIUtilities)
 
@@ -21,7 +21,7 @@ static const double oneHour = 3600.0;
 - (NSDate *)si_LocalDate
 {
     NSDate *localDate = self;
-    NSTimeInterval offset = fmod([self timeIntervalSince1970], ONEDAYTIMEINTERVAL);
+    NSTimeInterval offset = fmod([self timeIntervalSince1970], oneDay);
     NSTimeZone *timeZone = [NSTimeZone localTimeZone];
     NSDate *result;
     if (offset == 0) {
@@ -51,7 +51,7 @@ static const double oneHour = 3600.0;
 - (NSDate *)si_UTCDateAsStartOfDayWithCurrentTimeZone
 {
     NSDate *result;
-    NSTimeInterval offset = fmod([self timeIntervalSince1970], ONEDAYTIMEINTERVAL);
+    NSTimeInterval offset = fmod([self timeIntervalSince1970], oneDay);
     if (offset != 0) {
         NSCalendar *calendar = [self gregorianCalendar];
         NSUInteger components = (NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit |
@@ -72,6 +72,31 @@ static const double oneHour = 3600.0;
     }
     
     return result;
+}
+
+#pragma mark - last date methods
+
+- (NSDate *)si_lastWeek
+{
+    NSTimeInterval aTimeInterval = [self timeIntervalSinceReferenceDate] - 7 * oneDay;
+    NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:aTimeInterval];
+    return newDate;
+}
+
+- (NSDate *)si_lastMonth
+{
+    NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+    offsetComponents.month = -1;
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    return [calendar dateByAddingComponents:offsetComponents toDate:self options:0];
+}
+
+- (NSDate *)si_lastYear
+{
+    NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+    offsetComponents.year = -1;
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    return [calendar dateByAddingComponents:offsetComponents toDate:self options:0];
 }
 
 #pragma mark - private methods

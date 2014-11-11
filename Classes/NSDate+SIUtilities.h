@@ -14,4 +14,8 @@
 - (NSDate *)si_LocalDate;
 - (NSDate *)si_UTCDateAsStartOfDayWithCurrentTimeZone;
 
+- (NSDate *)si_lastWeek;
+- (NSDate *)si_lastMonth;
+- (NSDate *)si_lastYear;
+
 @end

@@ -77,6 +77,14 @@
     XCTAssert([[date si_LocalDate] isEqualToDate:[[date si_LocalDate] si_LocalDate]], @"");
 }
 
+- (void)testLastMethods
+{
+    NSDate *date = [NSDate date];
+    XCTAssertNotNil([date si_lastWeek]);
+    XCTAssertNotNil([date si_lastMonth]);
+    XCTAssertNotNil([date si_lastYear]);
+}
+
 - (void)test
 {
     NSDate *date = [NSDate date];
